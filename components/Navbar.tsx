@@ -8,6 +8,7 @@ import { BOOKING_URL } from "@/lib/constants";
 const links = [
   { href: "/", label: "Domov" },
   { href: "/sluzby", label: "Služby" },
+  { href: "/cennik", label: "Cenník" },
   { href: "/portfolio", label: "Portfólio" },
   { href: "/kurzy", label: "Kurzy" },
   { href: "/kontakt", label: "Kontakt" },
@@ -25,43 +26,45 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const onHero = isHome && !scrolled;
+
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled || !isHome
-          ? "bg-ink/96 backdrop-blur-md shadow-xl"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0">
-            <div className="w-9 h-9 rounded-full bg-lavender flex items-center justify-center">
-              <span className="font-script text-ink text-sm leading-none">
-                fu!
-              </span>
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-script text-xl text-cream leading-tight">
+    <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+      onHero
+        ? "bg-brand/80 backdrop-blur-sm"
+        : "bg-white/96 backdrop-blur-md shadow-sm border-b border-brand/20"
+    }`}>
+      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+
+          {/* Logo — matches the real brand logo */}
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <div className="w-10 h-10 rounded-full bg-brand flex flex-col items-center justify-center">
+              <span className="font-display font-black text-dark leading-none" style={{ fontSize: "9px", letterSpacing: "-0.01em" }}>
                 face up!
               </span>
-              <span className="text-[7px] tracking-[0.35em] uppercase text-cream/50 font-body">
+              <span className="font-display font-light text-dark leading-none tracking-[0.2em] uppercase" style={{ fontSize: "5px" }}>
+                studio
+              </span>
+            </div>
+            <div className="hidden sm:flex flex-col leading-none gap-0.5">
+              <span className="font-display font-black text-dark text-[1.35rem] leading-none tracking-tight">
+                face up!
+              </span>
+              <span className="font-display font-light text-dark/60 text-[8px] tracking-[0.3em] uppercase leading-none">
                 studio
               </span>
             </div>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-6">
             {links.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className={`text-sm tracking-widest uppercase font-body transition-colors duration-200 ${
-                  pathname === href
-                    ? "text-lavender"
-                    : "text-cream/70 hover:text-cream"
+                className={`font-display font-semibold text-sm transition-colors duration-200 ${
+                  pathname === href ? "text-rose" : "text-dark/60 hover:text-dark"
                 }`}
               >
                 {label}
@@ -69,48 +72,23 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* CTA + Hamburger */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <a
               href={BOOKING_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:inline-flex text-xs tracking-widest uppercase font-body px-6 py-2.5 border border-lavender text-lavender hover:bg-lavender hover:text-ink transition-all duration-200"
+              className="hidden lg:inline-flex items-center px-5 py-2 bg-dark text-white font-display font-black text-xs tracking-wide rounded-full hover:bg-rose transition-colors"
             >
               Rezervovať
             </a>
-            <button
-              onClick={() => setOpen(!open)}
-              className="lg:hidden text-cream p-1"
-              aria-label="Menu"
-            >
+            <button onClick={() => setOpen(!open)} className="lg:hidden text-dark p-1" aria-label="Menu">
               {open ? (
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
             </button>
@@ -118,19 +96,16 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden bg-ink border-t border-cream/10">
-          <nav className="px-6 py-6 flex flex-col gap-4">
+        <div className="lg:hidden bg-white border-t border-brand/30">
+          <nav className="px-5 py-5 flex flex-col gap-3">
             {links.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setOpen(false)}
-                className={`text-base font-body tracking-wide transition-colors ${
-                  pathname === href
-                    ? "text-lavender"
-                    : "text-cream/70 hover:text-cream"
+                className={`font-display font-bold text-base py-1 transition-colors ${
+                  pathname === href ? "text-rose" : "text-dark"
                 }`}
               >
                 {label}
@@ -141,7 +116,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="mt-4 text-xs tracking-widest uppercase font-body px-6 py-3 border border-lavender text-lavender hover:bg-lavender hover:text-ink transition-all duration-200 text-center"
+              className="mt-3 inline-flex items-center justify-center px-6 py-3 bg-dark text-white font-display font-black text-sm rounded-full hover:bg-rose transition-colors"
             >
               Rezervovať termín
             </a>
