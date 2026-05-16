@@ -70,14 +70,6 @@ export default function PortfolioPage() {
               </div>
             ))}
           </div>
-
-          <div className="mt-10 p-6 border-2 border-dashed border-brand/30 rounded-2xl text-center bg-blush/50">
-            <p className="font-display font-bold text-sm text-dark/50 mb-1">📸 Sem pridajte Vaše fotografie</p>
-            <p className="font-display text-xs text-dark/30">
-              Nahraďte zástupné karty reálnymi fotografiami pomocou komponentu{" "}
-              <code className="bg-dark/5 px-1.5 py-0.5 rounded text-dark/50">next/image</code>
-            </p>
-          </div>
         </div>
       </section>
 
